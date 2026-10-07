@@ -1,1 +1,410 @@
 
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plugin Showcase Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom smooth transitions for tab switching and card hover */
+        .tab-content {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800 font-sans antialiased flex flex-col justify-between">
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-200">
+                    <i class="fa-solid fa-puzzle-piece text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 tracking-tight">PluginHub Pro</h1>
+                    <p class="text-xs text-slate-500 font-medium">Manage and explore your extensions</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="showNotification('All plugins are up to date!')" class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition">
+                    <i class="fa-solid fa-rotate mr-2 text-slate-500"></i> Check Updates
+                </button>
+                <div class="flex items-center space-x-2 border-l border-slate-200 pl-4">
+                    <img class="w-9 h-9 rounded-full ring-2 ring-indigo-500/20" src="https://placehold.co/100x100/6366f1/ffffff?text=AD" alt="Admin Avatar" onerror="this.src='https://placehold.co/100x100/e2e8f0/64748b?text=User'">
+                    <span class="hidden md:inline text-sm font-semibold text-slate-700">Admin User</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <!-- Hero section -->
+        <div class="mb-10 text-center max-w-2xl mx-auto">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 mb-3 border border-indigo-100">
+                <i class="fa-solid fa-bolt mr-1.5 text-indigo-500"></i> Ecosystem Explorer
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
+                Discover Powerful Plugins
+            </h2>
+            <p class="text-slate-600 text-base">
+                Select a plugin tab below to view detailed features, configuration options, active status, and perform administrative actions.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap justify-center gap-2 mb-8" id="plugin-tabs">
+            <button onclick="switchTab(0)" class="tab-btn px-5 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center space-x-2 bg-indigo-600 text-white shadow-md shadow-indigo-100 ring-2 ring-indigo-600" data-index="0">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>SEO Optimizer</span>
+            </button>
+            <button onclick="switchTab(1)" class="tab-btn px-5 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center space-x-2 bg-white text-slate-600 hover:bg-slate-100 border border-slate-200" data-index="1">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Security Shield</span>
+            </button>
+            <button onclick="switchTab(2)" class="tab-btn px-5 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center space-x-2 bg-white text-slate-600 hover:bg-slate-100 border border-slate-200" data-index="2">
+                <i class="fa-solid fa-gauge-high"></i>
+                <span>Speed Booster</span>
+            </button>
+            <button onclick="switchTab(3)" class="tab-btn px-5 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center space-x-2 bg-white text-slate-600 hover:bg-slate-100 border border-slate-200" data-index="3">
+                <i class="fa-solid fa-database"></i>
+                <span>Backup Pro</span>
+            </button>
+            <button onclick="switchTab(4)" class="tab-btn px-5 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center space-x-2 bg-white text-slate-600 hover:bg-slate-100 border border-slate-200" data-index="4">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Analytics Hub</span>
+            </button>
+            <button onclick="switchTab(5)" class="tab-btn px-5 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center space-x-2 bg-white text-slate-600 hover:bg-slate-100 border border-slate-200" data-index="5">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>SMTP Mailer</span>
+            </button>
+        </div>
+
+        <div id="plugin-card-container" class="max-w-4xl mx-auto">
+            <!-- Card populated dynamically via JavaScript -->
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-500">
+            &copy; 2026 PluginHub Pro Dashboard. All rights reserved. Designed for clean performance & modern workflows.
+        </div>
+    </footer>
+
+    <!-- Notification Toast Modal Box -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 max-w-sm bg-slate-900 text-white px-5 py-3.5 rounded-xl shadow-xl flex items-center space-x-3">
+        <div id="toast-icon" class="text-emerald-400 text-lg">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div>
+            <p id="toast-title" class="text-xs font-semibold uppercase tracking-wider text-slate-400">Notification</p>
+            <p id="toast-message" class="text-sm font-medium text-white">Action completed successfully.</p>
+        </div>
+    </div>
+
+    <script>
+        // Plugin Dataset
+        const plugins = [
+            {
+                name: "SEO Optimizer Pro",
+                tagline: "Boost your search engine rankings with automated audits & schema markup.",
+                version: "v4.8.2",
+                author: "RankMaster Team",
+                rating: 4.9,
+                reviewsCount: "1.4k",
+                activeStatus: true,
+                category: "Marketing & Growth",
+                icon: "fa-chart-line",
+                color: "indigo",
+                description: "SEO Optimizer Pro continually scans your website structure, identifies broken links, optimizes meta descriptions on the fly, and generates advanced XML sitemaps to ensure maximum indexation by search engines.",
+                features: [
+                    "Real-time content readability & keyword scoring",
+                    "Automated JSON-LD Schema markup injection",
+                    "Broken link monitor with automatic redirection",
+                    "Google Search Console API deep integration"
+                ],
+                stats: { label: "Optimization Score", value: "98/100" }
+            },
+            {
+                name: "Security Shield",
+                tagline: "Enterprise-grade web application firewall and malware scanner.",
+                version: "v3.1.5",
+                author: "CyberGuard Inc.",
+                rating: 5.0,
+                reviewsCount: "2.8k",
+                activeStatus: true,
+                category: "Security & Safety",
+                icon: "fa-shield-halved",
+                color: "rose",
+                description: "Security Shield safeguards your digital perimeter against brute-force attacks, SQL injections, and malicious file uploads with deep behavioral analysis and dual-factor authentication enforcement.",
+                features: [
+                    "AI-powered Web Application Firewall (WAF)",
+                    "Scheduled deep malware file scanning",
+                    "Advanced rate-limiting & IP blacklisting",
+                    "Instant email & SMS security alerts"
+                ],
+                stats: { label: "Threats Blocked", value: "1,420+" }
+            },
+            {
+                name: "Speed Booster",
+                tagline: "Lightning fast asset optimization, caching, and CDN synchronization.",
+                version: "v5.2.0",
+                author: "Velocity Labs",
+                rating: 4.8,
+                reviewsCount: "950",
+                activeStatus: false,
+                category: "Performance",
+                icon: "fa-gauge-high",
+                color: "amber",
+                description: "Speed Booster transforms sluggish web apps into high-performance experiences through intelligent script deferral, CSS/JS minification, WebP image conversion, and robust browser caching.",
+                features: [
+                    "Advanced page & object caching algorithms",
+                    "Automatic critical CSS generation",
+                    "Lazy loading for images & iframes",
+                    "Global CDN edge node synchronization"
+                ],
+                stats: { label: "Avg Load Reduction", value: "65%" }
+            },
+            {
+                name: "Backup Pro",
+                tagline: "Automated cloud backups, instant point-in-time restores & migration.",
+                version: "v2.9.1",
+                author: "SafeVault Systems",
+                rating: 4.9,
+                reviewsCount: "1.9k",
+                activeStatus: true,
+                category: "Data Management",
+                icon: "fa-database",
+                color: "emerald",
+                description: "Never lose data again. Backup Pro creates secure cryptographic archives of your database and media files, storing them securely in remote cloud buckets like AWS S3, Google Cloud, or Dropbox.",
+                features: [
+                    "Scheduled incremental & full database backups",
+                    "One-click point-in-time disaster recovery",
+                    "Encrypted multi-cloud remote storage",
+                    "Migration tool for seamless server moves"
+                ],
+                stats: { label: "Last Backup", value: "Today, 03:00 AM" }
+            },
+            {
+                name: "Analytics Hub",
+                tagline: "Comprehensive visitor behavioral tracking and conversion funnels.",
+                version: "v1.7.4",
+                author: "DataMetrics Co.",
+                rating: 4.7,
+                reviewsCount: "720",
+                activeStatus: false,
+                category: "Analytics",
+                icon: "fa-chart-pie",
+                color: "purple",
+                description: "Gain deep insights into how users navigate your platform with privacy-focused visitor tracking, heatmaps, session recordings, and detailed conversion funnel breakdown analytics.",
+                features: [
+                    "Cookieless privacy-compliant tracking",
+                    "Visual click & scroll heatmaps",
+                    "Custom conversion goal funnels",
+                    "Weekly executive summary email reports"
+                ],
+                stats: { label: "Active Tracked Sessions", value: "45.2k" }
+            },
+            {
+                name: "SMTP Mailer",
+                tagline: "Guaranteed email delivery with professional SMTP relay integration.",
+                version: "v4.0.3",
+                author: "MailRoute Tech",
+                rating: 4.9,
+                reviewsCount: "3.1k",
+                activeStatus: true,
+                category: "Communication",
+                icon: "fa-paper-plane",
+                color: "cyan",
+                description: "Solve email deliverability issues once and for all. SMTP Mailer routes your transactional and notification emails through secure, authenticated third-party mail gateways like SendGrid, Mailgun, or Amazon SES.",
+                features: [
+                    "Support for SendGrid, Mailgun, Postfix & Gmail",
+                    "Detailed email send log & status dashboard",
+                    "Open and click-through rate tracking",
+                    "Failed delivery automatic retry queues"
+                ],
+                stats: { label: "Delivery Rate", value: "99.8%" }
+            }
+        ];
+
+        let currentActiveTab = 0;
+
+        function renderCard(index) {
+            const p = plugins[index];
+            const container = document.getElementById('plugin-card-container');
+            
+            // Generate color classes based on plugin theme
+            const colorMap = {
+                indigo: { bg: 'bg-indigo-50', text: 'text-indigo-600', ring: 'ring-indigo-500/20', button: 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200' },
+                rose: { bg: 'bg-rose-50', text: 'text-rose-600', ring: 'ring-rose-500/20', button: 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-200' },
+                amber: { bg: 'bg-amber-50', text: 'text-amber-600', ring: 'ring-amber-500/20', button: 'bg-amber-600 hover:bg-amber-700 text-white shadow-amber-200' },
+                emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600', ring: 'ring-emerald-500/20', button: 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-200' },
+                purple: { bg: 'bg-purple-50', text: 'text-purple-600', ring: 'ring-purple-500/20', button: 'bg-purple-600 hover:bg-purple-700 text-white shadow-purple-200' },
+                cyan: { bg: 'bg-cyan-50', text: 'text-cyan-600', ring: 'ring-cyan-500/20', button: 'bg-cyan-600 hover:bg-cyan-700 text-white shadow-cyan-200' }
+            };
+            const theme = colorMap[p.color];
+
+            container.innerHTML = `
+                <div class="tab-content bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-100 overflow-hidden">
+                    <!-- Card Top Header Banner -->
+                    <div class="p-6 sm:p-8 bg-gradient-to-r from-slate-900 to-slate-800 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 rounded-2xl ${theme.bg} ${theme.text} flex items-center justify-center text-3xl shadow-inner shrink-0">
+                                <i class="fa-solid ${p.icon}"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-white/10 text-white backdrop-blur-md">${p.category}</span>
+                                    <span class="text-xs text-slate-400 font-mono">${p.version}</span>
+                                </div>
+                                <h3 class="text-2xl font-bold tracking-tight text-white">${p.name}</h3>
+                                <p class="text-xs text-slate-300 mt-0.5">Developed by <span class="text-white font-medium">${p.author}</span></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+                            <div class="text-right">
+                                <div class="flex items-center text-amber-400 text-sm font-bold">
+                                    <i class="fa-solid fa-star mr-1"></i> ${p.rating}
+                                    <span class="text-xs text-slate-400 font-normal ml-1">(${p.reviewsCount})</span>
+                                </div>
+                                <span class="text-xs font-medium ${p.activeStatus ? 'text-emerald-400' : 'text-slate-400'} flex items-center justify-end mt-0.5">
+                                    <span class="w-2 h-2 rounded-full ${p.activeStatus ? 'bg-emerald-400 animate-pulse' : 'bg-slate-400'} mr-1.5"></span>
+                                    ${p.activeStatus ? 'Active & Running' : 'Inactive'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card Body Content -->
+                    <div class="p-6 sm:p-8 space-y-6">
+                        
+                        <!-- Tagline & Description -->
+                        <div>
+                            <h4 class="text-base font-semibold text-slate-900 mb-1">${p.tagline}</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed">${p.description}</p>
+                        </div>
+
+                        <!-- Quick Stat Box -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-lg ${theme.bg} ${theme.text} flex items-center justify-center font-bold text-sm">
+                                    <i class="fa-solid fa-chart-bar"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 font-medium">${p.stats.label}</p>
+                                    <p class="text-sm font-bold text-slate-900">${p.stats.value}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">
+                                    <i class="fa-solid fa-shield-check"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 font-medium">License Status</p>
+                                    <p class="text-sm font-bold text-emerald-600">Enterprise Verified</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Features list -->
+                        <div>
+                            <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Key Feature Highlights</h5>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                ${p.features.map(feat => `
+                                    <div class="flex items-start space-x-2.5 text-sm text-slate-700 bg-white p-3 rounded-lg border border-slate-100 shadow-2xs">
+                                        <i class="fa-solid fa-circle-check text-emerald-500 mt-0.5 shrink-0"></i>
+                                        <span class="font-medium">${feat}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons Bar -->
+                        <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+                            <div class="flex items-center space-x-3">
+                                <button onclick="handleAction('Settings opened for ${p.name}')" class="px-4 py-2.5 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition flex items-center space-x-2 shadow-2xs">
+                                    <i class="fa-solid fa-gear text-slate-500"></i>
+                                    <span>Configure</span>
+                                </button>
+                                <button onclick="handleAction('Documentation downloaded for ${p.name}')" class="px-4 py-2.5 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition flex items-center space-x-2 shadow-2xs">
+                                    <i class="fa-solid fa-book text-slate-500"></i>
+                                    <span>Docs</span>
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-3 w-full sm:w-auto">
+                                <button onclick="togglePluginStatus(${index})" class="px-4 py-2.5 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
+                                    ${p.activeStatus ? 'Deactivate' : 'Activate Plugin'}
+                                </button>
+                                <button onclick="handleAction('Successfully updated settings for ${p.name}')" class="px-5 py-2.5 text-sm font-semibold ${theme.button} rounded-xl transition shadow-md flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    <span>Save Changes</span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchTab(index) {
+            currentActiveTab = index;
+            
+            // Update button styles
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach((btn, idx) => {
+                if (idx === index) {
+                    btn.className = "tab-btn px-5 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center space-x-2 bg-indigo-600 text-white shadow-md shadow-indigo-100 ring-2 ring-indigo-600";
+                } else {
+                    btn.className = "tab-btn px-5 py-3 rounded-xl font-medium text-sm transition-all duration-200 flex items-center space-x-2 bg-white text-slate-600 hover:bg-slate-100 border border-slate-200";
+                }
+            });
+
+            renderCard(index);
+        }
+
+        function togglePluginStatus(index) {
+            plugins[index].activeStatus = !plugins[index].activeStatus;
+            renderCard(index);
+            showNotification(`${plugins[index].name} is now ${plugins[index].activeStatus ? 'Active' : 'Inactive'}.`);
+        }
+
+        function handleAction(msg) {
+            showNotification(msg);
+        }
+
+        function showNotification(message) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            msgEl.textContent = message;
+            
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3500);
+        }
+
+        // Initialize on window load
+        window.onload = function() {
+            renderCard(0);
+        };
+    </script>
+</body>
+</html>
